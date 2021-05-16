@@ -1,33 +1,32 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <ctime>
-
-using namespace std;
+#include <iostream>
 
 int main()
 {
     srand(time(NULL));
     int max, tries, correctNumber, guessedNumber = 0;
 
-    printf("Geben sie das Maximum der zufälligen Zahl ein:\n");
-    scanf(" %d", &max);
+    std::cout << "Geben sie das Maximum der zufälligen Zahl ein:" << std::endl;
+    std::cin >> max;
 
     correctNumber = rand() % (max + 1);
 
     do
     {
-        printf("Geben sie eine Zahl ein:\r\n");
-        scanf(" %d", &guessedNumber);
+        std::cout << "Geben sie eine Zahl ein:" << std::endl; 
+        std::cin >> guessedNumber;
 
         if (guessedNumber > correctNumber)
-            printf("Die geratene Zahl ist größer als die gesuchte Zahl.\n");
+            std::cout << "Die geratene Zahl ist größer als die gesuchte Zahl." << std::endl;
         else if (guessedNumber < correctNumber)
-            printf("Die geratene Zahl ist kleiner als die gesuchte Zahl.\n");
+            std::cout << "Die geratene Zahl ist kleiner als die gesuchte Zahl." << std::endl;
 
         tries++;
     } while (guessedNumber != correctNumber);
 
-    printf("Sie haben die Zahl erraten! Sie haben %d Versuche benötigt.", tries);
+    std::cout << "Sie haben die Zahl erraten! Sie haben " << tries << " Versuche benötigt." << std::endl;
 
     return 0;
 }
