@@ -36,6 +36,9 @@ void insert(Node * & node, const std::string key)
 
 void list(Node *node)
 {
+  if(node == NULL)
+    return;
+
   if (node->left != NULL)
     list(node->left);
 

@@ -2,65 +2,61 @@
 #include <string>
 #include <vector>
 
-std::vector<std::string *> readVector()
+void readInput(std::vector<std::string> *strings, std::vector<std::string *> *stringVectors)
 {
-  std::cout << "Geben Sie die Zeichenketten getrennt durch Leerzeichen ein:" << std::endl;
+  std::cout << "\".\" eingeben, um die Eingabe zu beenden." << std::endl;
+
   std::string input;
-  std::cin.clear();
-  std::cin.sync();
-  std::getline(std::cin, input);
-
-  std::string inputs[input.length()];
-  int stringCount = 0;
-
-  for (int i = 0; i < input.length(); i++)
+  while (true)
   {
-    if (input[i] == ' ')
-    {
-      stringCount++;
-      continue;
-    }
+    std::cout << "Geben Sie eine Zeichenkette ein:" << std::endl;
+    std::cin >> input;
 
-    inputs[stringCount] += input[i];
+    if (input.compare(".") == 0)
+      break;
+
+    strings->push_back(input);
+    int size = strings->size();
+    std::string *value = &(strings->at(size - 1));
+    stringVectors->push_back(new std::string(*value));
   }
-
-  std::vector<std::string *> result = std::vector<std::string *>(stringCount + 1);
-
-  for (int i = 0; i <= stringCount; i++)
-  {
-    result.at(i) = &inputs[i];
-  }
-
-  return result;
 }
 
-void sort(std::vector<std::string *> strings)
+//Insertionsort
+void sort(std::vector<std::string *> *strings)
 {
-  for (int i = 0; i < strings.size(); i++)
+  for (int i = 1; i < strings->size(); i++)
   {
-    std::string* key = strings[i];
-    std::string keyValue = *key;
+    std::string *key = strings->at(i);
     int j = i;
-    while (j > 0 && strings.at(j-1)->compare(*key) > 0)
+    while (j > 0 && strings->at(j - 1)->compare(*key) > 0)
     {
-      strings.at(j) = strings.at(j - 1);
+      strings->at(j) = strings->at(j - 1);
       j--;
     }
-    strings.at(j) = key;
+    strings->at(j) = key;
   }
+}
+
+void printArray(const std::vector<std::string*> stringVectors) {
+  for (int i = 0; i < stringVectors.size(); i++)
+  {
+    std::string *value = stringVectors[i];
+    std::cout << *value << std::endl;
+  }  
 }
 
 int main()
 {
-  std::vector<std::string *> strings = readVector();
+  std::vector<std::string> strings = std::vector<std::string>(0);
+  std::vector<std::string *> stringVectors = std::vector<std::string *>(0);
 
-  sort(strings);
+  readInput(&strings, &stringVectors);
 
-  for (int i = 0; i < strings.size(); i++)
-  {
-    std::string value = *strings[i];
-    std::cout << value << std::endl;
-  }
+  sort(&stringVectors);
+
+  std::cout << "Ergebnis der Sortierung: " << std::endl;
+  printArray(stringVectors);
 
   return 0;
 }
