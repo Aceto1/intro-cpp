@@ -118,6 +118,9 @@ bool moreMovesPossible(const vector<vector<int>> board)
     for (int j = 0; j < row.size() - 1; j++)
     {
       int color = row[j];
+      if (color == 0)
+        continue;
+
       if (row[j + 1] == color || board[i + 1][j] == color)
         return true;
     }
@@ -129,6 +132,9 @@ bool moreMovesPossible(const vector<vector<int>> board)
 bool isValidMove(const vector<vector<int>> board, const int column, const int row)
 {
   int color = board[row][column];
+
+  if (color == 0)
+    return false;
 
   if (row != 0)
     if (board[row - 1][column] == color)
@@ -193,24 +199,30 @@ void removeGroup(vector<vector<int>> *board, vector<GameField> group)
 
 void closeColumnCaps(vector<vector<int>> *board)
 {
-  for (int i = 0; i < board->at(0).size() - 1; i++)
+  bool anyGaps;
+  do
   {
-    bool gap = true;
-    for (int j = 0; j < board->size(); j++)
+    anyGaps = false;
+    for (int i = 0; i < board->at(0).size() - 1; i++)
     {
-      if (board->at(j)[i] != 0)
-        gap = false;
-    }
-
-    if (gap)
-    {
+      bool gap = true;
       for (int j = 0; j < board->size(); j++)
       {
-        board->at(j)[i] = board->at(j)[i + 1];
-        board->at(j)[i + 1] = 0;
+        if (board->at(j)[i] != 0)
+          gap = false;
+      }
+
+      if (gap)
+      {
+        anyGaps = true;
+        for (int j = 0; j < board->size(); j++)
+        {
+          board->at(j)[i] = board->at(j)[i + 1];
+          board->at(j)[i + 1] = 0;
+        }
       }
     }
-  }
+  } while (anyGaps);
 }
 
 void closeGaps(vector<vector<int>> *board)
