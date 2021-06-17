@@ -112,7 +112,7 @@ void printBoard(const vector<vector<int>> board, const int score)
 
 bool moreMovesPossible(const vector<vector<int>> board)
 {
-  for (int i = 0; i < board.size() - 1; i++)
+  for (int i = 0; i < board.size(); i++)
   {
     vector<int> row = board[i];
     for (int j = 0; j < row.size() - 1; j++)
@@ -121,7 +121,10 @@ bool moreMovesPossible(const vector<vector<int>> board)
       if (color == 0)
         continue;
 
-      if (row[j + 1] == color || board[i + 1][j] == color)
+      if (row[j + 1] == color)
+        return true;
+
+      if (i < board.size() - 1 && board[i + 1][j] == color)
         return true;
     }
   }
@@ -200,8 +203,10 @@ void removeGroup(vector<vector<int>> *board, vector<GameField> group)
 void closeColumnCaps(vector<vector<int>> *board)
 {
   bool anyGaps;
+  int max = board->at(0).size();
   do
   {
+    max--;
     anyGaps = false;
     for (int i = 0; i < board->at(0).size() - 1; i++)
     {
@@ -222,7 +227,7 @@ void closeColumnCaps(vector<vector<int>> *board)
         }
       }
     }
-  } while (anyGaps);
+  } while (anyGaps && max > 0);
 }
 
 void closeGaps(vector<vector<int>> *board)
