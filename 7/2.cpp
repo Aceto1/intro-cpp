@@ -8,12 +8,17 @@ class IntMenge
 private:
   int min;
   int max;
-  vector<int> set;
+  vector<bool> set;
 
 public:
   IntMenge(int min, int max) : min(min), max(max)
   {
-    set = vector<int>();
+    set = vector<bool>(max-min + 1);
+    for (int i = 0; i < set.size(); i++)
+    {
+      set.at(i) = false;
+    }
+    
   };
 
   bool isValid(int i)
@@ -23,53 +28,60 @@ public:
 
   void add(int i)
   {
-    for (int j = 0; j < set.size(); j++)
-    {
-      if (i == set.at(j))
-        return;
-    }
-
-    set.push_back(i);
+    set.at(i - min) = true;
   };
 
   void remove(int i)
   {
-    for (int j = 0; j < set.size(); j++)
-    {
-      if (i == set.at(j))
-        set.erase(set.begin() + j);
-    }
+    set.at(i - min) = false;
   };
 
   bool contains(int i)
-  {
-    for (int j = 0; j < set.size(); j++)
-    {
-      if (i == set.at(j))
-        return true;
-    }
+  {    
+    return set.at(i - min);
   };
 
   bool isEmpty()
   {
-    return set.size() == 0;
+    for (int i = 0; i < set.size(); i++)
+    {
+      if(set.at(i))
+        return false;
+    }
+    
+    return true;
   };
 
   int getSize()
   {
-    return set.size();
+    int size = 0;
+    for (int i = 0; i < set.size(); i++)
+    {
+      if(set.at(i))
+        size++;
+    }
+    
+    return size;
   };
 
   vector<int> getElements()
   {
-    return set;
+    vector<int> result;
+    for (int i = 0; i < set.size(); i++)
+    {
+      if(set.at(i))
+        result.push_back(i + min);
+    }
+
+    return result;    
   };
 
   void print()
   {
-    for (int j = 0; j < set.size(); j++)
+    for (int i = 0; i < set.size(); i++)
     {
-      cout << set.at(j) << endl;
+      if(set.at(i))
+        cout << i + min << endl;
     }
   };
 };
